@@ -1,0 +1,1 @@
+C:\Github\Project-Spotless\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\Debug\2g1r4k1u\obj\arm64-v8a
