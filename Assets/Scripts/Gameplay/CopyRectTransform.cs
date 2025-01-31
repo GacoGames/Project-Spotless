@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [ExecuteInEditMode]
 public class CopyRectTransform : MonoBehaviour
@@ -9,12 +10,11 @@ public class CopyRectTransform : MonoBehaviour
 
     private RectTransform rectTransform;
     private TextMeshProUGUI textMeshPro;
-    private bool smoothTransition = true;
+    private Image image;
 
-    void Update()
+    private void LateUpdate()
     {
         if (referenceRectTransform == null) return;
-
         CopySize();
     }
 
@@ -22,39 +22,36 @@ public class CopyRectTransform : MonoBehaviour
     {
         if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
         if (textMeshPro == null) textMeshPro = referenceRectTransform.GetComponent<TextMeshProUGUI>();
-
-        // if (string.IsNullOrEmpty(textMeshPro.text))
-        // {
-        //     gameObject.SetActive(false);
-        //     return;
-        // }
-
-        // if (!gameObject.activeSelf)
-        // {
-        //     gameObject.SetActive(true);
-        // }
+        if (image == null) image = GetComponent<Image>();
 
         Vector2 newSize;
         Vector3 referencePosition = referenceRectTransform.localPosition;
 
         if (textMeshPro != null)
         {
-            // Force TextMeshPro to update its geometry
+            // Force canvas update to ensure layout is processed
+            Canvas.ForceUpdateCanvases();
+            // Update text mesh to reflect changes
             textMeshPro.ForceMeshUpdate();
 
-            // Get the bounds of the text
+            // Get updated text bounds
             Bounds textBounds = textMeshPro.textBounds;
 
-            // Calculate the size with padding
             newSize = new Vector2(textBounds.size.x, textBounds.size.y) + padding;
+
+            // Handle empty text
+            if (string.IsNullOrEmpty(textMeshPro.text))
+            {
+                newSize = Vector2.zero;
+            }
         }
         else
         {
-            // Use reference RectTransform size
+            // Fallback to rect transform size
             newSize = referenceRectTransform.rect.size + padding;
         }
 
-        // Instantly set size and position
+        // Apply changes
         rectTransform.sizeDelta = newSize;
         rectTransform.localPosition = referencePosition;
     }
