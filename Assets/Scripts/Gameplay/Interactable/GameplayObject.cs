@@ -2,14 +2,14 @@ using UnityEngine;
 
 public abstract class GameplayObject : MonoBehaviour
 {
-    public string objectName; // Name of the object to display in hover text
+    public abstract string ObjectName { get; }
     public bool isInteractable = true; // Whether the object can currently be interacted with
 
     public virtual void OnHover()
     {
         if (isInteractable && HoverText.Instance != null)
         {
-            HoverText.Instance.ShowHoverText(objectName);
+            HoverText.Instance.ShowHoverText(ObjectName);
         }
     }
 
@@ -23,6 +23,6 @@ public abstract class GameplayObject : MonoBehaviour
 
     public virtual void OnClick()
     {
-        Debug.Log($"{objectName} clicked!");
+        Debug.Log($"{ObjectName} clicked!");
     }
 }

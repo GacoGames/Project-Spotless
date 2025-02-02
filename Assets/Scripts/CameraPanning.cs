@@ -81,11 +81,7 @@ public class CameraPanning : MonoBehaviour
         {
             // Apply inertia to camera movement
             transform.position += velocity;
-
-            // Gradually reduce velocity over time
             velocity = Vector3.Lerp(velocity, Vector3.zero, Time.deltaTime * inertiaDamping);
-
-            // Stop completely when velocity is very small
             if (velocity.magnitude < 0.01f)
             {
                 velocity = Vector3.zero;
@@ -115,5 +111,19 @@ public class CameraPanning : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireCube(boundaryCollider.bounds.center, boundaryCollider.bounds.size);
         }
+    }
+
+    public void SetBoundary(Collider2D boundary)
+    {
+        boundaryCollider = boundary;
+        if (boundaryCollider != null)
+        {
+            // Move camera to the center of the new boundary while preserving Z position
+            Bounds bounds = boundaryCollider.bounds;
+            Vector3 newPos = bounds.center;
+            newPos.z = transform.position.z; // Maintain camera's Z position
+            transform.position = newPos;
+        }
+        velocity = Vector3.zero;
     }
 }

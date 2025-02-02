@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class InteractionController : MonoBehaviour
 {
-    public Camera mainCamera;
+    private Camera mainCamera;
     public LayerMask interactionLayer; // Only interactable layers will be considered
 
     private GameplayObject currentHoveredObject;
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+    }
 
     private void Update()
     {
